@@ -31,7 +31,7 @@ public class Main {
     }
 
     public String getLabel() {
-        return;
+        return label;
         
     }
 
