@@ -31,7 +31,8 @@ public class Main {
     }
 
     public String getLabel() {
-        return label;
+        return;
+        
     }
 
     public static MenuOptionEnum fromInt(int value) {
