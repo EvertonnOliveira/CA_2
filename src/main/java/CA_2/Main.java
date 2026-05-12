@@ -233,15 +233,15 @@ public class Main {
                 System.out.println("\n[NOTE] Binary Search requires a sorted list.");
                 System.out.print("Enter the employee name to search: ");
                 String name = sc.nextLine();
-                Search.search(employees, name);
+                Search.binarySearch(employees, name);
             }
             case LINEAR_SEARCH -> {
-                System.out.print("\nEnter the employee name to search: ");
-                String name = sc.nextLine();
-                // LinearSearch.search(employees, name); -- coming soon
-                System.out.println("[LINEAR SEARCH - coming soon]");
-            }
-            case BACK -> System.out.println("Returning to main menu...");
+                    System.out.print("\nEnter the employee name to search: ");
+                    String name = sc.nextLine();
+                    Search.linearSearch(employees, name);
+                }
+            
+                case BACK -> System.out.println("Returning to main menu...");
         }
     }
 }
