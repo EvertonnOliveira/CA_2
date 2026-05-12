@@ -105,9 +105,8 @@ public class Main {
         System.out.println("\n=============================");
         System.out.println("  Bank Organisation System");
         System.out.println("=============================");
-        System.out.print("\nPlease enter the filename to read: ");
-        String filePath = sc.nextLine().trim();
-
+        String filePath = "Applicants_Form - Sample data file for read.txt";
+        System.out.println("Loading data from: " + filePath);
         try {
             employees = ApplicantsFileReader.readFile(filePath);
             System.out.println("File read successfully! " + employees.size() + " records loaded.");
@@ -190,13 +189,13 @@ public class Main {
         switch (option) {
             case SELECTION_SORT -> {
                 System.out.println("\nRunning Selection Sort...");
-                SortingAlgorithm.recursiveSelectionSort(employees);
-                SortingAlgorithm.displayFirst20(employees);
+                Sort.recursiveSelectionSort(employees);
+                Sort.displayFirst20(employees);
             }
             case QUICK_SORT -> {
                 System.out.println("\nRunning Quick Sort...");
-                SortingAlgorithm.recursiveQuickSort(employees);
-                SortingAlgorithm.displayFirst20(employees);
+                Sort.recursiveQuickSort(employees);
+                Sort.displayFirst20(employees);
             }
             case BACK -> System.out.println("Returning to main menu...");
         }
@@ -234,7 +233,7 @@ public class Main {
                 System.out.println("\n[NOTE] Binary Search requires a sorted list.");
                 System.out.print("Enter the employee name to search: ");
                 String name = sc.nextLine();
-                SearchAlgorithm.search(employees, name);
+                Search.search(employees, name);
             }
             case LINEAR_SEARCH -> {
                 System.out.print("\nEnter the employee name to search: ");
