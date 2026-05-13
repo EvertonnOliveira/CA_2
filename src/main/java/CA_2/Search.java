@@ -2,19 +2,12 @@ package CA_2;
 
 import java.util.List;
 
-/**
- * SearchAlgorithm.java
- * Contains TWO searching algorithms for the Bank Organisation System:
- *   1. Linear Search  - adapted from professor's LinearBinary example
- *   2. Binary Search  - recursive, adapted from professor's BinarySearchRecursive example
- *
- * Both search the employee list by full name.
- */
+
+
 public class Search {
 
     // ================================================================
     //  SECTION 1 — LINEAR SEARCH
-    //  Adapted from professor's LinearBinary.linearSearch()
     //
     //  HOW IT WORKS:
     //  - Checks every element one by one from start to end
@@ -26,16 +19,13 @@ public class Search {
     //        if (arr[i] == key) return i;
     //    return -1;
     //
-    //  This version adapts the same logic to List<Employee> with Strings
     // ================================================================
 
     /**
      * PUBLIC entry point for Linear Search.
      * Called from Main when user picks "Linear Search".
      * Does NOT require the list to be sorted first.
-     *
-     * @param employees the list to search (sorted or unsorted)
-     * @param name      the full name to search for
+  
      */
     public static void linearSearch(List<Employee> employees, String name) {
 
