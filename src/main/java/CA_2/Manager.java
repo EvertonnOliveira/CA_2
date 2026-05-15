@@ -13,6 +13,7 @@ package CA_2;
  */
 public class Manager {
 
+   
     // ================================================================
     //  ENUM — defines the 3 valid Manager types
     //  Used for validation in Add Record feature
