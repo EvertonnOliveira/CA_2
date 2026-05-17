@@ -148,7 +148,7 @@ public class Main {
             switch (option) {
                 case SORT -> handleSortMenu(sc, employees);
                 case SEARCH -> handleSearchMenu(sc, employees);
-                case ADD_RECORD -> System.out.println("[ADD RECORD - coming soon]");
+                case ADD_RECORD -> ADDRecords.addNewEmployee(employees, sc);
                 case BINARY_TREE -> System.out.println("[BINARY TREE - coming soon]");
                 case EXIT -> {
                     System.out.println("Exiting program. Goodbye!");

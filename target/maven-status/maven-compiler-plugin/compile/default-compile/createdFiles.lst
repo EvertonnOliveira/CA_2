@@ -2,11 +2,12 @@ CA_2/Employee.class
 CA_2/Sort.class
 CA_2/Department.class
 CA_2/Manager.class
-CA_2/Manager$ManagerType.class
-CA_2/Main$SortOptionEnum.class
 CA_2/Main$SearchOptionEnum.class
 CA_2/ApplicantsFileReader.class
+CA_2/Main$MenuOptionEnum.class
+CA_2/ADDRecords.class
+CA_2/Manager$ManagerType.class
+CA_2/Main$SortOptionEnum.class
 CA_2/Search.class
 CA_2/Department$DepartmentType.class
-CA_2/Main$MenuOptionEnum.class
 CA_2/Main.class
