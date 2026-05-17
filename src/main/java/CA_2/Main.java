@@ -149,7 +149,7 @@ public class Main {
                 case SORT -> handleSortMenu(sc, employees);
                 case SEARCH -> handleSearchMenu(sc, employees);
                 case ADD_RECORD -> ADDRecords.addNewEmployee(employees, sc);
-                case BINARY_TREE -> System.out.println("[BINARY TREE - coming soon]");
+                case BINARY_TREE -> BinaryTree.displayHierarchy(employees);
                 case EXIT -> {
                     System.out.println("Exiting program. Goodbye!");
                     sc.close();
