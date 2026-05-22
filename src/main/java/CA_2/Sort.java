@@ -2,50 +2,16 @@ package CA_2;
 
 import java.util.List;
 
-/**
- * SortingAlgorithm.java
- * Contains TWO recursive sorting algorithms for the Bank Organisation System:
- *   1. Selection Sort (recursive)
- *   2. Quick Sort (recursive)
- *
- * Both sort the employee list alphabetically by full name.
- */
+
 public class Sort {
 
-    // ================================================================
-    //  SECTION 1 — RECURSIVE SELECTION SORT
-    //  Adapted from professor's pseudocode (iterative → recursive)
-    //
-    //  HOW IT WORKS:
-    //  - Find the smallest name from current position to end of list
-    //  - Swap it to the current position
-    //  - Recursively repeat for the next position
-    //
-    //  Example:
-    //  [Kate, Alex, Zara, Ben]
-    //   → finds Alex (smallest) → swaps to pos 0 → [Alex, Kate, Zara, Ben]
-    //   → finds Ben (smallest of rest) → swaps to pos 1 → [Alex, Ben, Zara, Kate]
-    //   → finds Kate → swaps to pos 2 → [Alex, Ben, Kate, Zara] ✅
-    // ================================================================
-
-    /**
-     * PUBLIC entry point for Selection Sort.
-     * Called from Main when user picks "Selection Sort".
-     * Starts the recursion from index 0.
-     *
-     * @param employees the list to sort
-     */
+    
     public static void recursiveSelectionSort(List<Employee> employees) {
         // Start sorting from position 0
         selectionSort(employees, 0);
     }
 
-    /**
-     * PRIVATE recursive method — does the actual Selection Sort work.
-     *
-     * @param employees  the list being sorted
-     * @param startIndex current position we are filling (replaces FOR i in pseudocode)
-     */
+ 
     private static void selectionSort(List<Employee> employees, int startIndex) {
 
         // BASE CASE: if startIndex reached the last element, list is sorted → stop
@@ -94,74 +60,13 @@ public class Sort {
         selectionSort(employees, startIndex + 1);
     }
 
-
-    // ================================================================
-    //  SECTION 2 — RECURSIVE QUICK SORT
-    //
-    //  HOW IT WORKS:
-    //  - Pick a PIVOT element (we use the last element of each section)
-    //  - PARTITION: move names smaller than pivot to LEFT
-    //               move names greater than pivot to RIGHT
-    //               place pivot in its correct final position
-    //  - Recursively sort LEFT part and RIGHT part
-    //
-    //  Example:
-    //  [Kate, Alex, Zara, Ben, Elena]   pivot = "Elena"
-    //  After partition: [Alex, Ben] | Elena | [Kate, Zara]
-    //  Recurse left:    [Alex, Ben]  → sorted ✅
-    //  Recurse right:   [Kate, Zara] → sorted ✅
-    //  Final: [Alex, Ben, Elena, Kate, Zara] ✅
-    // ================================================================
-
-    /**
-     * PUBLIC entry point for Quick Sort.
-     * Called from Main when user picks "Quick Sort".
-     * Starts the recursion on the full list (index 0 to last).
-     *
-     * @param employees the list to sort
-     */
+    
     public static void recursiveQuickSort(List<Employee> employees) {
         // Start with the full range: from index 0 to last index
         quickSort(employees, 0, employees.size() - 1);
     }
 
-    /**
-     * PRIVATE recursive Quick Sort method.
-     *
-     * @param employees the list being sorted
-     * @param low       start index of current section
-     * @param high      end index of current section
-     */
-    private static void quickSort(List<Employee> employees, int low, int high) {
-
-        // BASE CASE: section has 1 or 0 elements → already sorted, nothing to do
-        if (low >= high) {
-            return;
-        }
-
-        // PARTITION: rearrange elements around pivot
-        // Returns the FINAL index where pivot was placed
-        int pivotIndex = partition(employees, low, high);
-
-        // RECURSIVE CALL LEFT: sort everything BEFORE the pivot
-        quickSort(employees, low, pivotIndex - 1);
-
-        // RECURSIVE CALL RIGHT: sort everything AFTER the pivot
-        quickSort(employees, pivotIndex + 1, high);
-    }
-
-    /**
-     * PRIVATE partition method — the core of Quick Sort.
-     * Picks last element as pivot and rearranges the section so:
-     *   - Everything smaller than pivot is on the LEFT
-     *   - Everything greater than pivot is on the RIGHT
-     *   - Pivot ends up in its correct final position
-     *
-     * @param employees the list
-     * @param low       start of section
-     * @param high      end of section (where pivot is)
-     * @return          final index of pivot after partitioning
-     */
+    
     private static int partition(List<Employee> employees, int low, int high) {
 
         // Pick the LAST element of the section as pivot
@@ -248,5 +153,9 @@ public class Sort {
         // Print closing divider and summary
         System.out.println("-".repeat(75));
         System.out.println("Showing " + limit + " of " + employees.size() + " employees.");
+    }
+
+    private static void quickSort(List<Employee> employees, int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
