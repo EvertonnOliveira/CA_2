@@ -16,7 +16,7 @@ public class Employee {
     private String email;
     private double salary;
     private String department;
-    private String position;   // intern, junior, middle, senior, contract, etc.
+    private String position;   // intern, junior, middle, senior, etc.
     private String jobTitle;
     private String company;
 
