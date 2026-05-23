@@ -1,193 +1,179 @@
-// This code belongs to the package (folder) called CA_2
-package CA_2;
+package CA_2; // All files in this project share this package name
 
-// Import tools we need to use
-import java.util.ArrayList; // Used to create a resizable list
-import java.util.List;      // Used as the type for our list
-import java.util.Scanner;   // Used to read input from the user
-import CA_2.Manager.ManagerType;       // Import the ManagerType enum from the Manager class
-import CA_2.Department.DepartmentType; // Import the DepartmentType enum from the Department class
+import java.util.List; // Allows us to use List to store Employee objects
 
-// This class handles adding new employees to the system
-public class ADDRecords {
+public class Sort { // This class contains both sorting algorithms
 
     // ================================================================
-    //  Keeps track of all records added during this session
+    //  SECTION 1 — RECURSIVE SELECTION SORT
     // ================================================================
 
-    // A list that stores only the employees added in the current session
-    private static List<Employee> newlyAdded = new ArrayList<>();
-
-    // This method handles the full process of adding a new employee
-    public static void addNewEmployee(List<Employee> employees, Scanner sc) {
-
-        // Print a header to the screen
-        System.out.println("\n========= Add New Employee =========");
-
-        // ----------------------------------------------------------------
-        // STEP 1: Get the employee name
-        // ----------------------------------------------------------------
-
-        // Ask the user to type the employee's name
-        System.out.print("Please input the Employee Name: ");
-
-        // Read the name and remove any extra spaces at the start or end
-        String name = sc.nextLine().trim();
-
-        // Keep asking until the user types something (name cannot be blank)
-        while (name.isEmpty()) {
-            System.out.println("[ERROR] Name cannot be empty. Please try again."); // Show error
-            System.out.print("Please input the Employee Name: ");                  // Ask again
-            name = sc.nextLine().trim();                                            // Read again
-        }
-
-        // ----------------------------------------------------------------
-        // STEP 2: Choose Manager Type (with validation)
-        // ----------------------------------------------------------------
-
-        // Show the list of available manager types to the user
-        Manager.displayManagerTypes();
-
-        ManagerType managerType = null; // Start with no manager type selected
-
-        // Keep asking until the user picks a valid manager type
-        while (managerType == null) {
-            System.out.print("\nEnter your choice: "); // Ask the user to type a number
-
-            if (sc.hasNextInt()) {                         // Check if the input is a number
-                int choice = sc.nextInt();                 // Read the number
-                sc.nextLine();                             // Clear the leftover newline from input
-                managerType = ManagerType.fromInt(choice); // Find the matching manager type
-            } else {
-                sc.nextLine(); // Clear the invalid input so we can try again
-            }
-
-            // If no match was found, show an error
-            if (managerType == null) {
-                System.out.println("[ERROR] Invalid choice! Please select a valid Manager Type.");
-            }
-        }
-
-        // ----------------------------------------------------------------
-        // STEP 3: Choose Department (with validation)
-        // ----------------------------------------------------------------
-
-        // Show the list of available departments to the user
-        Department.displayDepartmentTypes();
-
-        DepartmentType departmentType = null; // Start with no department selected
-
-        // Keep asking until the user picks a valid department
-        while (departmentType == null) {
-            System.out.print("\nEnter your choice: "); // Ask the user to type a number
-
-            if (sc.hasNextInt()) {                               // Check if the input is a number
-                int choice = sc.nextInt();                       // Read the number
-                sc.nextLine();                                   // Clear the leftover newline from input
-                departmentType = DepartmentType.fromInt(choice); // Find the matching department
-            } else {
-                sc.nextLine(); // Clear the invalid input so we can try again
-            }
-
-            // If no match was found, show an error
-            if (departmentType == null) {
-                System.out.println("[ERROR] Invalid choice! Please select a valid Department.");
-            }
-        }
-
-        // ----------------------------------------------------------------
-        // STEP 4: Create new Employee and add to list
-        // ----------------------------------------------------------------
-
-        // Create a new Employee object using the information collected above
-        // Fields like email, gender and salary are set to default values
-        Employee newEmployee = new Employee(
-            getFirstName(name),          // Extract the first name from the full name
-            getLastName(name),           // Extract the last name from the full name
-            "N/A",                       // Gender is not collected, so set to "N/A"
-            "N/A",                       // Email is not collected, so set to "N/A"
-            0.0,                         // Salary is not collected, so set to 0
-            departmentType.getLabel(),   // Use the department the user chose
-            managerType.getLabel(),      // Use the manager type as the position
-            managerType.getLabel(),      // Use the manager type as the job title too
-            "Bank"                       // All employees belong to "Bank"
-        );
-
-        // Add the new employee to the main employee list
-        employees.add(newEmployee);
-
-        // Also add the new employee to the session list (newly added)
-        newlyAdded.add(newEmployee);
-
-        // ----------------------------------------------------------------
-        // STEP 5: Confirm and display all newly added records
-        // ----------------------------------------------------------------
-
-        // Print a success message showing what was added
-        System.out.println("\n\"" + name + "\" has been added as \""
-                + managerType.getLabel() + "\" to \""
-                + departmentType.getLabel() + "\" successfully!");
-
-        // Show all records that were added in this session
-        displayNewlyAdded();
+    // PUBLIC method — called from Main.java when user selects Selection Sort
+    public static void recursiveSelectionSort(List<Employee> employees) {
+        selectionSort(employees, 0); // Start sorting from position 0
     }
 
-    // This method prints all employees added during the current session
-    public static void displayNewlyAdded() {
+    // PRIVATE recursive method — does the actual sorting work
+    // startIndex = the current position we are filling with the smallest name
+    private static void selectionSort(List<Employee> employees, int startIndex) {
 
-        // If no employees have been added yet, print a message and stop
-        if (newlyAdded.isEmpty()) {
-            System.out.println("\nNo new records added yet.");
-            return; // Exit the method early
+        // BASE CASE: if we reached the last element, list is sorted — stop
+        if (startIndex >= employees.size() - 1) {
+            return; // void return — just exits this method
         }
 
-        // Print a header for the table
-        System.out.println("\n========= Newly Added Records =========");
+        // Assume the minimum is at startIndex (same as professor's pseudocode: minIndex = i)
+        int minIndex = startIndex;
 
-        // Print the column titles with fixed widths so they line up neatly
-        System.out.printf("%-4s %-22s %-20s %-15s%n",
-                "#", "Full Name", "Manager Type", "Department");
+        // Inner loop: check every element AFTER startIndex
+        // (same as professor's pseudocode: FOR j = i+1 to n-1)
+        for (int j = startIndex + 1; j < employees.size(); j++) {
 
-        // Print a divider line made of 65 dashes
-        System.out.println("-".repeat(65));
+            // Get the name at position j in lowercase for fair comparison
+            String current = employees.get(j).getFullName().toLowerCase();
 
-        // Loop through all newly added employees and print each one
-        for (int i = 0; i < newlyAdded.size(); i++) {
-            Employee e = newlyAdded.get(i); // Get the employee at position i
+            // Get the name at the current minimum position in lowercase
+            String minimum = employees.get(minIndex).getFullName().toLowerCase();
 
-            // Print the row number, full name, position and department
-            System.out.printf("%-4d %-22s %-20s %-15s%n",
-                    (i + 1),           // Row number (starts at 1)
-                    e.getFullName(),   // Employee's full name
-                    e.getPosition(),   // Employee's position (manager type)
-                    e.getDepartment()); // Employee's department
+            // compareTo() compares alphabetically
+            // negative result = current comes before minimum → current is the new minimum
+            if (current.compareTo(minimum) < 0) {
+                minIndex = j; // update the minimum position
+            }
         }
 
-        // Print a closing divider line
-        System.out.println("-".repeat(65));
+        // SWAP: only swap if the minimum is not already in the correct position
+        if (minIndex != startIndex) {
 
-        // Print the total count of newly added employees
-        System.out.println("Total new records added: " + newlyAdded.size());
+            // Save the element at startIndex so we don't lose it
+            Employee temp = employees.get(startIndex);
+
+            // Place the minimum element at startIndex
+            employees.set(startIndex, employees.get(minIndex));
+
+            // Place the old startIndex element where the minimum was
+            employees.set(minIndex, temp);
+        }
+
+        // RECURSIVE CALL: move to the next position (replaces i++ from professor's FOR loop)
+        // The element at startIndex is now correct — sort the rest
+        selectionSort(employees, startIndex + 1);
     }
 
     // ================================================================
-    //  HELPER METHODS
-    //  Split full name into first and last name
+    //  SECTION 2 — RECURSIVE QUICK SORT
     // ================================================================
 
-    // Returns the first word of the full name as the first name
-    private static String getFirstName(String fullName) {
-        String[] parts = fullName.trim().split(" "); // Split the name by spaces into an array
-        return parts[0]; // Return the first word
+    // PUBLIC method — called from Main.java when user selects Quick Sort
+    public static void recursiveQuickSort(List<Employee> employees) {
+        // Start with the full list: from index 0 to last index
+        quickSort(employees, 0, employees.size() - 1);
     }
 
-    // Returns the last word of the full name as the last name
-    private static String getLastName(String fullName) {
-        String[] parts = fullName.trim().split(" "); // Split the name by spaces into an array
+    // PRIVATE recursive method — divides and sorts around a pivot
+    // low = start of current section, high = end of current section
+    private static void quickSort(List<Employee> employees, int low, int high) {
 
-        if (parts.length > 1) {
-            return parts[parts.length - 1]; // Return the last word if there is more than one word
+        // BASE CASE: section has 1 or 0 elements — already sorted, nothing to do
+        if (low >= high) {
+            return;
         }
-        return parts[0]; // If only one word was given, use it as both first and last name
+
+        // PARTITION: rearrange elements around the pivot
+        // Returns the final index where the pivot was placed
+        int pivotIndex = partition(employees, low, high);
+
+        // RECURSIVE CALL LEFT: sort everything BEFORE the pivot
+        quickSort(employees, low, pivotIndex - 1);
+
+        // RECURSIVE CALL RIGHT: sort everything AFTER the pivot
+        quickSort(employees, pivotIndex + 1, high);
+    }
+
+    // PRIVATE method — the core of Quick Sort
+    // Picks the last element as pivot and moves:
+    // names smaller than pivot → LEFT side
+    // names greater than pivot → RIGHT side
+    // pivot → its correct final position
+    private static int partition(List<Employee> employees, int low, int high) {
+
+        // Pick the LAST element as pivot
+        String pivot = employees.get(high).getFullName().toLowerCase();
+
+        // i tracks the boundary between "smaller than pivot" and "greater than pivot"
+        // starts before the section — nothing on the left side yet
+        int i = low - 1;
+
+        // Walk through every element in the section EXCEPT the pivot (at high)
+        for (int j = low; j < high; j++) {
+
+            // Get the name of the current element
+            String current = employees.get(j).getFullName().toLowerCase();
+
+            // If current is SMALLER than pivot → belongs on the LEFT side
+            // compareTo < 0 means current comes before pivot alphabetically
+            if (current.compareTo(pivot) < 0) {
+
+                // Expand the left side by one position
+                i++;
+
+                // Swap current element into the left side
+                Employee temp = employees.get(i);   // save element at boundary
+                employees.set(i, employees.get(j));  // move current to boundary
+                employees.set(j, temp);               // move old boundary to j
+            }
+            // If current > pivot → do nothing, it stays on the right side
+        }
+
+        // Place pivot in its correct final position
+        // pivot belongs at i+1 (right after all smaller elements)
+        int pivotFinalIndex = i + 1;
+
+        // Swap pivot (currently at high) into its correct position (i+1)
+        Employee temp = employees.get(pivotFinalIndex);
+        employees.set(pivotFinalIndex, employees.get(high)); // pivot goes to final position
+        employees.set(high, temp);                           // old element goes to high
+
+        // Return pivot's final index so quickSort() knows where to split
+        return pivotFinalIndex;
+    }
+
+    // ================================================================
+    //  DISPLAY METHOD — shared by both sorting algorithms
+    // ================================================================
+
+    // PUBLIC method — displays the first 20 names from the sorted list
+    public static void displayFirst20(List<Employee> employees) {
+
+        System.out.println("\n========= Sorted Employee List (First 20) =========");
+
+        // Print table header with fixed column widths
+        // %-4s = left-aligned, 4 characters wide
+        // %-22s = left-aligned, 22 characters wide
+        System.out.printf("%-4s %-22s %-25s %-20s%n",
+                "#", "Full Name", "Job Title", "Department");
+
+        // Print a divider line of 75 dashes
+        System.out.println("-".repeat(75));
+
+        // Math.min() ensures we don't go past the list size if less than 20 employees
+        int limit = Math.min(20, employees.size());
+
+        // Loop through first 20 (or fewer) employees and print each row
+        for (int i = 0; i < limit; i++) {
+            Employee e = employees.get(i); // get employee at position i
+
+            // Print row: number, full name, job title, department
+            // (i+1) because display starts at 1, not 0
+            System.out.printf("%-4d %-22s %-25s %-20s%n",
+                    (i + 1),
+                    e.getFullName(),
+                    e.getJobTitle(),
+                    e.getDepartment());
+        }
+
+        // Print closing divider and summary line
+        System.out.println("-".repeat(75));
+        System.out.println("Showing " + limit + " of " + employees.size() + " employees.");
     }
 }

@@ -4,13 +4,6 @@
  */
 package CA_2;
 
-/**
- * Department.java
- * Represents the different Departments in the Bank Organisation.
- *
- * The DepartmentType enum defines the 5 valid departments.
- * Each Department object stores a type and a description.
- */
 public class Department {
 
     // ================================================================
