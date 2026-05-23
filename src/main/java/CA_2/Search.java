@@ -30,7 +30,7 @@ public class Search {
   
     private static int doLinearSearch(List<Employee> employees, String target) {
 
-        // professor's: for (int i = 0; i < arr.length; i++)
+        // for (int i = 0; i < arr.length; i++)
         for (int i = 0; i < employees.size(); i++) {
 
             // professor's: if (arr[i] == key) return i
@@ -40,7 +40,7 @@ public class Search {
             }
         }
 
-        return -1; // professor's: return -1 (not found)
+        return -1; // return -1 (not found)
     }
 
   
@@ -74,7 +74,7 @@ public class Search {
         int mid = (left + right) / 2;
 
         // Compare middle element with target
-        // professor's: int cmp = arr[mid].compareTo(target)
+        // int cmp = arr[mid].compareTo(target)
         int cmp = employees.get(mid).getFullName().compareToIgnoreCase(target);
 
         // professor's: if (cmp == 0) return mid
@@ -88,7 +88,7 @@ public class Search {
             return doBinarySearch(employees, mid + 1, right, target);
         }
 
-        // professor's: else right = mid - 1
+        // else right = mid - 1
         // mid comes AFTER target → target is in LEFT half
         return doBinarySearch(employees, left, mid - 1, target);
     }
