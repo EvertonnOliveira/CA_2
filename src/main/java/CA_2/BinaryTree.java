@@ -8,24 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * BinaryTree.java
- * Represents the Bank Organisation hierarchy as a Binary Tree.
- *
- * INSERTION: Level-Order (breadth-first)
- *   - Fills left child first, then right child
- *   - When both children are taken, moves to next node in level order
- *   - Guarantees a balanced tree structure
- *
- * Example with 7 nodes:
- *         Alex          ← level 0 (root)
- *        /    \
- *      Ben    Carol     ← level 1
- *     / \    /   \
- *  David Elena Finn George  ← level 2
- *
- * Each node stores: Name, Manager Type, Department
- */
+
+ 
 public class BinaryTree {
 
     // ================================================================
@@ -61,25 +45,7 @@ public class BinaryTree {
         this.root = null; // empty tree at start
     }
 
-    // ================================================================
-    //  INSERT — Level-Order (breadth-first) insertion
-    //
-    //  HOW IT WORKS:
-    //  - Use a Queue to track nodes that still have empty children
-    //  - For each new employee:
-    //    1. If tree is empty → becomes root
-    //    2. Otherwise → find first node with empty left or right child
-    //    3. Fill left first, then right
-    //    4. When both filled → remove from queue, move to next node
-    // ================================================================
-
-    /**
-     * Inserts a new employee into the tree using Level-Order insertion.
-     *
-     * @param name        employee full name
-     * @param managerType manager type label
-     * @param department  department label
-     */
+   
     public void insert(String name, String managerType, String department) {
 
         // Create the new node
