@@ -1,173 +1,189 @@
-package CA_2; // Define o pacote — todos os ficheiros do projecto partilham este nome
+package CA_2; // All files in this project share this package name
 
-import java.util.List; // Importa a interface List para usar listas de objectos
+import java.util.List; // Allows us to use List to store Employee objects
 
-public class Sort { // Declara a classe Sort — contém os dois algoritmos de ordenação
+public class Sort { // This class contains both sorting algorithms
 
     // ================================================================
     //  SECTION 1 — RECURSIVE SELECTION SORT
+    //
+    //  HOW IT WORKS:
+    //  - Find the smallest name from the current position to the end
+    //  - Swap it into the current position
+    //  - Recursively repeat for the next position
+    //  - Stop when there is only one element left (base case)
     // ================================================================
 
-    // Método PÚBLICO — é este que o Main.java chama quando o utilizador escolhe Selection Sort
+    // PUBLIC method — called from Main.java when user selects Selection Sort
     public static void recursiveSelectionSort(List<Employee> employees) {
-        selectionSort(employees, 0); // Inicia a recursão a partir do índice 0
+        selectionSort(employees, 0); // Start the recursion from index 0
     }
 
-    // Método PRIVADO — faz o trabalho real da ordenação recursiva
-    // startIndex = posição actual que estamos a preencher com o mínimo
+    // PRIVATE recursive method — does the actual sorting work
+    // startIndex = the current position we are filling with the smallest name
     private static void selectionSort(List<Employee> employees, int startIndex) {
 
-        // BASE CASE: se startIndex chegou ao último elemento, a lista está ordenada → para
-        // size()-1 porque o último elemento não tem nada para comparar
+        // BASE CASE: if startIndex reached the last element, the list is sorted — stop
+        // size()-1 because the last element has nothing left to compare with
         if (startIndex >= employees.size() - 1) {
-            return; // return em void = "sai deste método, não faças mais nada"
+            return; // void return — just exits this method call
         }
 
-        // Assume que o mínimo está na posição startIndex (igual ao pseudocódigo: minIndex = i)
+        // Assume the minimum element is at startIndex
+        // (same as professor's pseudocode: minIndex = i)
         int minIndex = startIndex;
 
-        // Loop interno: percorre todos os elementos DEPOIS de startIndex
-        // (igual ao pseudocódigo do professor: FOR j = i+1 to n-1)
+        // Inner loop: check every element AFTER startIndex
+        // (same as professor's pseudocode: FOR j = i+1 to n-1)
         for (int j = startIndex + 1; j < employees.size(); j++) {
 
-            // Obtém o nome completo na posição j em minúsculas (para comparação justa)
+            // Get the full name at position j in lowercase for fair comparison
             String current = employees.get(j).getFullName().toLowerCase();
 
-            // Obtém o nome completo na posição do mínimo actual em minúsculas
+            // Get the full name at the current minimum position in lowercase
             String minimum = employees.get(minIndex).getFullName().toLowerCase();
 
-            // compareTo() compara alfabeticamente:
-            // resultado negativo = current vem antes de minimum → current é o novo mínimo
+            // compareTo() compares alphabetically:
+            // negative result = current comes before minimum → current is the new minimum
             if (current.compareTo(minimum) < 0) {
-                minIndex = j; // actualiza a posição do mínimo
+                minIndex = j; // update the minimum position
             }
         }
 
-        // SWAP: só troca se o mínimo não está já na posição correcta
-        // (evita troca desnecessária quando o elemento já está no lugar certo)
+        // SWAP: only swap if the minimum is not already in the correct position
+        // (avoids unnecessary swap when the element is already in the right place)
         if (minIndex != startIndex) {
 
-            // Guarda o elemento de startIndex temporariamente para não o perder
+            // Save the element at startIndex temporarily so we don't lose it
             Employee temp = employees.get(startIndex);
 
-            // Coloca o elemento mínimo em startIndex
+            // Place the minimum element at startIndex
             employees.set(startIndex, employees.get(minIndex));
 
-            // Coloca o antigo elemento de startIndex onde estava o mínimo
+            // Place the old startIndex element where the minimum was
             employees.set(minIndex, temp);
         }
 
-        // CHAMADA RECURSIVA: avança para a próxima posição (substitui i++ do FOR do professor)
-        // O elemento em startIndex já está correcto — ordena o resto
+        // RECURSIVE CALL: move to the next position (replaces i++ from professor's FOR loop)
+        // The element at startIndex is now correct — sort the rest of the list
         selectionSort(employees, startIndex + 1);
     }
 
     // ================================================================
     //  SECTION 2 — RECURSIVE QUICK SORT
+    //
+    //  HOW IT WORKS:
+    //  - Pick a PIVOT element (the last element of the current section)
+    //  - PARTITION: move names smaller than pivot to the LEFT
+    //               move names greater than pivot to the RIGHT
+    //               place pivot in its correct final position
+    //  - Recursively sort the LEFT part and the RIGHT part
+    //  - Stop when the section has 0 or 1 element (base case)
     // ================================================================
 
-    // Método PÚBLICO — é este que o Main.java chama quando o utilizador escolhe Quick Sort
+    // PUBLIC method — called from Main.java when user selects Quick Sort
     public static void recursiveQuickSort(List<Employee> employees) {
-        // Inicia com o intervalo completo: do índice 0 ao último índice
+        // Start with the full list: from index 0 to the last index
         quickSort(employees, 0, employees.size() - 1);
     }
 
-    // Método PRIVADO — divide e ordena recursivamente em torno do pivot
-    // low = início do intervalo actual, high = fim do intervalo actual
+    // PRIVATE recursive method — divides and sorts around a pivot
+    // low = start of the current section
+    // high = end of the current section
     private static void quickSort(List<Employee> employees, int low, int high) {
 
-        // BASE CASE: secção tem 1 ou 0 elementos → já está ordenada, nada a fazer
+        // BASE CASE: section has 1 or 0 elements — already sorted, nothing to do
         if (low >= high) {
             return;
         }
 
-        // PARTITION: reorganiza os elementos em torno do pivot
-        // Devolve o índice final onde o pivot foi colocado
+        // PARTITION: rearrange elements around the pivot
+        // Returns the final index where the pivot was placed
         int pivotIndex = partition(employees, low, high);
 
-        // CHAMADA RECURSIVA ESQUERDA: ordena tudo ANTES do pivot
+        // RECURSIVE CALL LEFT: sort everything BEFORE the pivot
         quickSort(employees, low, pivotIndex - 1);
 
-        // CHAMADA RECURSIVA DIREITA: ordena tudo DEPOIS do pivot
+        // RECURSIVE CALL RIGHT: sort everything AFTER the pivot
         quickSort(employees, pivotIndex + 1, high);
     }
 
-    // Método PRIVADO — o coração do Quick Sort
-    // Escolhe o último elemento como pivot e reorganiza a secção:
-    // elementos menores que pivot ficam à ESQUERDA
-    // elementos maiores que pivot ficam à DIREITA
-    // pivot fica na sua posição final correcta
+    // PRIVATE method — the core of Quick Sort (partition step)
+    // Picks the last element as pivot and rearranges the section so:
+    //   - Names smaller than pivot go to the LEFT side
+    //   - Names greater than pivot go to the RIGHT side
+    //   - Pivot ends up in its correct final position
     private static int partition(List<Employee> employees, int low, int high) {
 
-        // Escolhe o ÚLTIMO elemento da secção como pivot
+        // Pick the LAST element of the section as pivot
         String pivot = employees.get(high).getFullName().toLowerCase();
 
-        // i é a fronteira entre "menores que pivot" e "maiores que pivot"
-        // começa antes do início da secção (lado "menor" ainda vazio)
+        // i tracks the boundary between "smaller than pivot" and "greater than pivot"
+        // starts before the section — nothing on the left side yet
         int i = low - 1;
 
-        // Percorre todos os elementos da secção EXCEPTO o pivot (que está em high)
+        // Walk through every element in the section EXCEPT the pivot (which is at high)
         for (int j = low; j < high; j++) {
 
-            // Obtém o nome do elemento actual
+            // Get the name of the current element
             String current = employees.get(j).getFullName().toLowerCase();
 
-            // Se o elemento actual é MENOR que o pivot → pertence ao lado esquerdo
-            // compareTo < 0 significa que current vem antes de pivot alfabeticamente
+            // If current is SMALLER than pivot → it belongs on the LEFT side
+            // compareTo < 0 means current comes before pivot alphabetically
             if (current.compareTo(pivot) < 0) {
 
-                // Expande o lado esquerdo uma posição
+                // Expand the left side by one position
                 i++;
 
-                // Troca o elemento actual para o lado esquerdo
-                Employee temp = employees.get(i);  // guarda o elemento na fronteira
-                employees.set(i, employees.get(j)); // move o actual para a fronteira
-                employees.set(j, temp);              // move a antiga fronteira para j
+                // Swap current element into the left side
+                Employee temp = employees.get(i);    // save element at boundary
+                employees.set(i, employees.get(j));  // move current to boundary
+                employees.set(j, temp);               // move old boundary to j
             }
-            // Se current > pivot → não faz nada, fica no lado direito
+            // If current > pivot → do nothing, it stays on the right side
         }
 
-        // Coloca o pivot na sua posição final correcta
-        // pivot pertence a i+1 (logo após todos os elementos menores)
+        // Place pivot in its correct final position
+        // pivot belongs at i+1 (right after all smaller elements)
         int pivotFinalIndex = i + 1;
 
-        // Troca o pivot (actualmente em high) para a sua posição correcta (i+1)
+        // Swap pivot (currently at high) into its correct position (i+1)
         Employee temp = employees.get(pivotFinalIndex);
-        employees.set(pivotFinalIndex, employees.get(high)); // pivot vai para posição final
-        employees.set(high, temp);                           // antigo elemento vai para high
+        employees.set(pivotFinalIndex, employees.get(high)); // pivot goes to final position
+        employees.set(high, temp);                           // old element goes to high
 
-        // Devolve o índice final do pivot para o quickSort() saber onde dividir
+        // Return pivot's final index so quickSort() knows where to split
         return pivotFinalIndex;
     }
 
     // ================================================================
-    //  DISPLAY METHOD — partilhado pelos dois algoritmos de ordenação
+    //  DISPLAY METHOD — shared by both sorting algorithms
     // ================================================================
 
-    // Método PÚBLICO — mostra os primeiros 20 nomes da lista ordenada no terminal
+    // PUBLIC method — displays the first 20 names from the sorted list in the terminal
     public static void displayFirst20(List<Employee> employees) {
 
-        // Imprime o cabeçalho da tabela
+        // Print the table header
         System.out.println("\n========= Sorted Employee List (First 20) =========");
 
-        // Printf formata colunas com largura fixa:
-        // %-4s = alinhado à esquerda, 4 caracteres
-        // %-22s = alinhado à esquerda, 22 caracteres
+        // Printf formats columns with fixed widths:
+        // %-4s  = left-aligned, 4 characters wide
+        // %-22s = left-aligned, 22 characters wide
         System.out.printf("%-4s %-22s %-25s %-20s%n",
                 "#", "Full Name", "Job Title", "Department");
 
-        // Imprime linha divisória de 75 traços
+        // Print a divider line of 75 dashes
         System.out.println("-".repeat(75));
 
-        // Math.min() garante que não ultrapassa o tamanho da lista se tiver menos de 20
+        // Math.min() ensures we don't go past the list size if less than 20 employees
         int limit = Math.min(20, employees.size());
 
-        // Percorre os primeiros 20 (ou menos) funcionários e imprime cada linha
+        // Loop through the first 20 (or fewer) employees and print each row
         for (int i = 0; i < limit; i++) {
-            Employee e = employees.get(i); // obtém o funcionário na posição i
+            Employee e = employees.get(i); // get employee at position i
 
-            // Imprime linha: número, nome completo, cargo, departamento
-            // (i+1) porque a numeração começa em 1, não em 0
+            // Print row: number, full name, job title, department
+            // (i+1) because the display starts at 1, not 0
             System.out.printf("%-4d %-22s %-25s %-20s%n",
                     (i + 1),
                     e.getFullName(),
@@ -175,7 +191,7 @@ public class Sort { // Declara a classe Sort — contém os dois algoritmos de o
                     e.getDepartment());
         }
 
-        // Imprime divisória final e resumo
+        // Print closing divider and summary line
         System.out.println("-".repeat(75));
         System.out.println("Showing " + limit + " of " + employees.size() + " employees.");
     }
